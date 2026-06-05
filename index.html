@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Справочник «Знаток» — 999 схем</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Электронный конструктор «Знаток»</h1>
+        <p class="subtitle">Практические занятия по физике</p>
+        <nav>
+            <a href="#parts-section" class="nav-btn active" data-tab="parts">Детали</a>
+            <a href="#works-section" class="nav-btn" data-tab="works">Практические работы</a>
+            <a href="#box-section" class="nav-btn" data-tab="box">Расположение в коробке</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="parts-section" class="tab-content active">
+            <div class="search-box">
+                <input type="text" id="partSearch" placeholder="Введите номер детали (1–62)...">
+            </div>
+            <div id="partResult"></div>
+            <div id="partsGrid" class="parts-grid"></div>
+        </section>
+
+        <section id="works-section" class="tab-content">
+            <div class="search-box">
+                <input type="text" id="workSearch" placeholder="Поиск по названию работы...">
+            </div>
+            <ul id="worksList" class="works-list"></ul>
+        </section>
+
+        <section id="box-section" class="tab-content">
+            <h2>Расположение элементов в коробке</h2>
+            <img src="pages/page_75.png" alt="Расположение элементов в коробке" class="box-image">
+        </section>
+    </main>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
