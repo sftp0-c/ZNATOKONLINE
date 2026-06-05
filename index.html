@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#339af0">
 </head>
 <body>
     <header>
@@ -23,6 +25,7 @@
                 <a href="#" class="nav-btn active" data-tab="parts">Детали</a>
                 <a href="#" class="nav-btn" data-tab="works">Работы</a>
                 <a href="#" class="nav-btn" data-tab="box">Коробка</a>
+                <button id="themeToggle" class="theme-btn">🌙</button>
             </nav>
         </div>
     </header>
@@ -75,5 +78,10 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
 </body>
 </html>

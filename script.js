@@ -233,3 +233,22 @@ document.querySelector('.modal-overlay').addEventListener('click', () => {
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') modal.classList.add('hidden');
 });
+
+// --- Dark theme ---
+const themeBtn = document.getElementById('themeToggle');
+function setTheme(dark) {
+    document.body.classList.toggle('dark', dark);
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    themeBtn.textContent = dark ? '☀️' : '🌙';
+}
+themeBtn.addEventListener('click', () => {
+    setTheme(!document.body.classList.contains('dark'));
+});
+setTheme(localStorage.getItem('theme') === 'dark');
+
+// --- Zoom on images in modal ---
+modalBody.addEventListener('click', e => {
+    if (e.target.tagName === 'IMG' && currentWorkIndex >= 0) {
+        e.target.classList.toggle('zoomed');
+    }
+});

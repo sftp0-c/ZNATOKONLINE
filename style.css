@@ -365,6 +365,51 @@ main {
 
 .modal-nav button:hover { background: var(--accent-dark); }
 
+.theme-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.theme-btn:hover { background: var(--surface-hover); }
+
+.modal-content img.zoomed {
+    transform: scale(1.8);
+    transform-origin: top center;
+    cursor: zoom-out;
+    position: relative;
+    z-index: 10;
+}
+.modal-content img:not(.zoomed) {
+    cursor: zoom-in;
+}
+
+/* Dark theme */
+body.dark {
+    --bg: #1a1b1e;
+    --surface: #25262b;
+    --surface-hover: #2c2e33;
+    --border: #373a40;
+    --text: #e9ecef;
+    --text-muted: #909296;
+    --accent: #4dabf7;
+    --accent-light: #1b2838;
+    --accent-dark: #74c0fc;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+}
+body.dark header {
+    background: rgba(26,27,30,0.85);
+}
+
 @media (max-width: 768px) {
     .header-inner {
         flex-direction: column;
