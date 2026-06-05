@@ -227,8 +227,8 @@ function renderWorkContent(work) {
 document.querySelector('.modal-close').addEventListener('click', () => {
     modal.classList.add('hidden');
 });
-modal.addEventListener('click', e => {
-    if (e.target === modal) modal.classList.add('hidden');
+document.querySelector('.modal-overlay').addEventListener('click', () => {
+    modal.classList.add('hidden');
 });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') modal.classList.add('hidden');

@@ -3,24 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Справочник «Знаток» — 999 схем</title>
+    <title>Знаток — 999 схем</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Электронный конструктор «Знаток»</h1>
-        <p class="subtitle">Практические занятия по физике</p>
-        <nav>
-            <a href="#parts-section" class="nav-btn active" data-tab="parts">Детали</a>
-            <a href="#works-section" class="nav-btn" data-tab="works">Практические работы</a>
-            <a href="#box-section" class="nav-btn" data-tab="box">Расположение в коробке</a>
-        </nav>
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <div>
+                    <h1>Знаток</h1>
+                    <p class="subtitle">999 схем — Практикум по физике</p>
+                </div>
+            </div>
+            <nav>
+                <a href="#" class="nav-btn active" data-tab="parts">Детали</a>
+                <a href="#" class="nav-btn" data-tab="works">Работы</a>
+                <a href="#" class="nav-btn" data-tab="box">Коробка</a>
+            </nav>
+        </div>
     </header>
 
     <main>
         <section id="parts-section" class="tab-content active">
             <div class="search-box">
-                <input type="text" id="partSearch" placeholder="Введите номер или название детали...">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="partSearch"
+                    placeholder="Поиск по номеру или названию...">
             </div>
             <div id="categoryFilters" class="category-filters"></div>
             <div id="partResult"></div>
@@ -29,20 +45,31 @@
 
         <section id="works-section" class="tab-content">
             <div class="search-box">
-                <input type="text" id="workSearch" placeholder="Поиск по названию работы...">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="workSearch"
+                    placeholder="Поиск по названию работы...">
             </div>
             <ul id="worksList" class="works-list"></ul>
         </section>
 
         <section id="box-section" class="tab-content">
-            <h2>Расположение элементов в коробке</h2>
+            <h2 class="section-title">Расположение элементов в коробке</h2>
             <img src="pages/page_75.png" alt="Расположение элементов в коробке" class="box-image">
         </section>
     </main>
 
     <div id="modal" class="modal hidden">
+        <div class="modal-overlay"></div>
         <div class="modal-content">
-            <span class="modal-close">&times;</span>
+            <button class="modal-close" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
             <div id="modalBody"></div>
         </div>
     </div>
