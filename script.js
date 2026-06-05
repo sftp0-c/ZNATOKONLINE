@@ -48,6 +48,19 @@ const parts = {
     62: "Интегральная схема цифровой записи"
 };
 
+const categories = {
+    "Все": null,
+    "Провода": [1, 2, 3, 4, 5, 6, 7],
+    "Переключатели": [13, 14, 15],
+    "Резисторы": [16, 30, 31, 32, 33, 34, 53],
+    "Конденсаторы": [40, 41, 42, 43, 44, 54],
+    "Светодиоды и лампы": [17, 18, 26, 27, 58],
+    "Микросхемы": [21, 22, 23, 29, 50, 55, 62],
+    "Транзисторы": [51, 52, 59],
+    "Прочее": [11, 12, 19, 20, 24, 25, 28, 56, 57]
+};
+let activeCategory = "Все";
+
 const works = [
     { id: 1, title: "Источники питания. Батарейки и аккумуляторы", pages: [11, 12, 13, 14, 15, 16] },
     { id: 2, title: "Переключатели", pages: [17, 18, 19] },
@@ -83,12 +96,34 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     });
 });
 
+// --- Category filters ---
+function renderCategories() {
+    const container = document.getElementById('categoryFilters');
+    Object.keys(categories).forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'cat-btn' + (cat === activeCategory ? ' active' : '');
+        btn.textContent = cat;
+        btn.addEventListener('click', () => {
+            activeCategory = cat;
+            container.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('partSearch').value = '';
+            document.getElementById('partResult').innerHTML = '';
+            document.getElementById('partsGrid').style.display = '';
+            renderPartsGrid();
+        });
+        container.appendChild(btn);
+    });
+}
+renderCategories();
+
 // --- Parts grid ---
 function renderPartsGrid(filter) {
     const grid = document.getElementById('partsGrid');
     grid.innerHTML = '';
     const codes = Object.keys(parts).map(Number).sort((a, b) => a - b);
     codes.forEach(code => {
+        if (activeCategory !== "Все" && !categories[activeCategory].includes(code)) return;
         if (filter && !String(code).includes(filter) &&
             !parts[code].toLowerCase().includes(filter.toLowerCase())) return;
         const card = document.createElement('div');
@@ -100,19 +135,16 @@ function renderPartsGrid(filter) {
         grid.appendChild(card);
     });
 }
-
 renderPartsGrid();
 
 // --- Part search ---
 document.getElementById('partSearch').addEventListener('input', function() {
     const val = this.value.trim();
     const result = document.getElementById('partResult');
-
     if (val && parts[val]) {
         result.innerHTML = `<div class="part-detail">
             <img src="parts/part_${val}.png" alt="${parts[val]}">
-            <h3>№${val} — ${parts[val]}</h3>
-        </div>`;
+            <h3>№${val} — ${parts[val]}</h3></div>`;
         document.getElementById('partsGrid').style.display = 'none';
     } else {
         result.innerHTML = '';
@@ -131,9 +163,7 @@ function renderWorksList(filter) {
             String(w.id).includes(filter);
         const li = document.createElement('li');
         if (!match) li.classList.add('hidden-work');
-        li.innerHTML = `<a href="#" data-work="${w.id}">
-            <span class="work-number">№${w.id}</span>${w.title}
-        </a>`;
+        li.innerHTML = `<a href="#"><span class="work-number">№${w.id}</span>${w.title}</a>`;
         li.querySelector('a').addEventListener('click', e => {
             e.preventDefault();
             openWorkModal(w);
@@ -141,42 +171,65 @@ function renderWorksList(filter) {
         list.appendChild(li);
     });
 }
-
 renderWorksList();
 
 document.getElementById('workSearch').addEventListener('input', function() {
     renderWorksList(this.value.trim());
 });
 
-// --- Modal ---
+// --- Modal with navigation ---
 const modal = document.getElementById('modal');
 const modalBody = document.getElementById('modalBody');
+let currentWorkIndex = -1;
 
 function showPartModal(code) {
-    modalBody.innerHTML = `
-        <h2>№${code} — ${parts[code]}</h2>
+    currentWorkIndex = -1;
+    modalBody.innerHTML = `<h2>№${code} — ${parts[code]}</h2>
         <img src="parts/part_${code}.png" alt="${parts[code]}">`;
     modal.classList.remove('hidden');
 }
 
 function openWorkModal(work) {
-    let html = `<h2>Занятие №${work.id}: ${work.title}</h2>`;
-    work.pages.forEach(p => {
-        html += `<img src="pages/page_${p}.png" alt="Страница ${p}" loading="lazy">`;
-    });
-    modalBody.innerHTML = html;
+    currentWorkIndex = works.findIndex(w => w.id === work.id);
+    renderWorkContent(work);
     modal.classList.remove('hidden');
     modalBody.parentElement.scrollTop = 0;
+}
+
+function renderWorkContent(work) {
+    let html = `<h2>Занятие №${work.id}: ${work.title}</h2>`;
+    work.pages.forEach(p => {
+        html += `<img src="pages/page_${p}.png" alt="Стр. ${p}" loading="lazy">`;
+    });
+    html += `<div class="modal-nav">`;
+    if (currentWorkIndex > 0)
+        html += `<button id="prevWork">Предыдущая</button>`;
+    else html += `<span></span>`;
+    if (currentWorkIndex < works.length - 1)
+        html += `<button id="nextWork">Следующая</button>`;
+    else html += `<span></span>`;
+    html += `</div>`;
+    modalBody.innerHTML = html;
+    const prev = document.getElementById('prevWork');
+    const next = document.getElementById('nextWork');
+    if (prev) prev.addEventListener('click', () => {
+        currentWorkIndex--;
+        renderWorkContent(works[currentWorkIndex]);
+        modalBody.parentElement.scrollTop = 0;
+    });
+    if (next) next.addEventListener('click', () => {
+        currentWorkIndex++;
+        renderWorkContent(works[currentWorkIndex]);
+        modalBody.parentElement.scrollTop = 0;
+    });
 }
 
 document.querySelector('.modal-close').addEventListener('click', () => {
     modal.classList.add('hidden');
 });
-
 modal.addEventListener('click', e => {
     if (e.target === modal) modal.classList.add('hidden');
 });
-
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') modal.classList.add('hidden');
 });
